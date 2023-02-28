@@ -1,8 +1,14 @@
 # import dependency from rest_framework
-from rest_framework                 import serializers
+from rest_framework                 import serializers, status
+from rest_framework.fields          import CharField, DateField
+from rest_framework.exceptions      import APIException
 
 # import needed models
 from django.contrib.auth.models     import User
+from . models                       import Task
+
+from collections                    import OrderedDict
+from datetime                       import datetime
 
 
 # custom serializer to remove leading and trailing commas on fields
@@ -59,3 +65,35 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+    
+class DateIsInPastException(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = 'Deadline cannot be in the past'
+    default_code = 'invalid'
+    
+class TaskSerializer(serializers.ModelSerializer):
+
+    user = serializers.PrimaryKeyRelatedField(queryset = User.objects.all(), many=False)
+    status = CharField(required=True)
+    deadline = DateField(required=True)
+    
+    class Meta:
+        model = Task
+        fields = (
+            'title',
+            'description',
+            'status',
+            'deadline',
+            'date_created',
+            'user'
+        )
+
+    def validate(self, res: OrderedDict):
+
+        current_date = datetime.now().date()
+        deadline = res.get('deadline')
+
+        if deadline < current_date:
+            raise DateIsInPastException
+        return res
+

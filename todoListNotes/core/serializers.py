@@ -1,14 +1,17 @@
-# import dependency from rest_framework
-from rest_framework import serializers, status
-from rest_framework.fields import CharField, DateField
-from rest_framework.exceptions import APIException, ValidationError
+# import dependencies from rest_framework
+from rest_framework                 import serializers, status
+# from rest_framework.fields          import CharField, DateField
+from rest_framework.exceptions      import APIException
 
 # import needed models
-from django.contrib.auth.models import User
-from . models import Task
+from django.contrib.auth.models     import User
+from . models                       import Task
 
-from collections import OrderedDict
-from datetime import datetime, date
+# import OrderedDict
+from collections                    import OrderedDict
+
+# import date dependencies
+from datetime                       import datetime, date
 
 
 # custom serializer to remove leading and trailing commas on CharFields
@@ -31,6 +34,12 @@ class StrippedDateField(serializers.DateField):
         if isinstance(value, date):
             return value.strftime(self.default_format)
         return value
+
+# custom exception if the deadline date is in the past
+class DateIsInPastException(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = 'Deadline cannot be in the past'
+    default_code = 'invalid'
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -80,18 +89,13 @@ class RegistrationSerializer(serializers.ModelSerializer):
         # saves the user using user.save()
         user.save()
 
+        # return the saved user
         return user
-
-
-class DateIsInPastException(APIException):
-    status_code = status.HTTP_400_BAD_REQUEST
-    default_detail = 'Deadline cannot be in the past'
-    default_code = 'invalid'
 
 
 class TaskSerializer(serializers.ModelSerializer):
 
-    # user = serializers.PrimaryKeyRelatedField(queryset = User.objects.all(), many=False, read_only=True)
+    # declare user as read-only so that it is not required during deserialization
     user = serializers.ReadOnlyField(source='user.username', required=False)
     title = StrippedCharField(required=True)
     description = StrippedCharField(required=True)
@@ -100,53 +104,74 @@ class TaskSerializer(serializers.ModelSerializer):
     date_created = StrippedDateField(required=False)
 
     class Meta:
+        # define mode
         model = Task
-        fields = ('title', 'description', 'status',
-                  'deadline', 'date_created', 'user', 'is_active')
+        # define the fields to be serialize/deserialize
+        fields = ['title', 'description', 'status',
+                  'deadline', 'date_created', 'user', 'is_active']
         read_only_fields = ('user',)
 
+    # override the validate method
     def validate(self, res: OrderedDict):
+        # get current date
         current_date = datetime.now().date()
+        # get the deadline from request body
         deadline = res.get("deadline")
 
+        # if deadline is not None and deadline less than the current date
         if deadline and deadline < current_date:
+            # raise an exception
             raise DateIsInPastException
         return res
 
+    # override the save method
     def save(self):
-
+        # get the 'title' validated data
         title = self.validated_data['title']
+        # get all titles from Task model
         all_titles = Task.objects.values_list('title', flat=True)
 
+        # loop through the all_titles list
         for titles in all_titles:
+            # if the title is already existing
             if title == titles:
+                # raise a ValidationError
                 raise serializers.ValidationError(
                     {'title': 'Operation failed, there is an existing task with the same title.'})
 
+        # create the task instance and populate the fields
         task = Task(
             description=self.validated_data['description'],
             deadline=self.validated_data['deadline'],
             title=title,
+            # gets the currently authenticated user
             user=self.validated_data['user']
         )
 
+        # save the created task
         task.save()
 
+    # override the update method
     def update(self, instance, validated_data):
-
+        # get the fields you want to update
         title = validated_data.get('title', instance.title)
         description = validated_data.get('description', instance.description)
         status = validated_data.get('status', instance.status)
         deadline = validated_data.get('deadline', instance.deadline)
 
+        # Check if there is a task with the same title, except for the current instance
         if Task.objects.filter(title=title).exclude(pk=instance.pk).exists():
             raise serializers.ValidationError(
                 {'title': 'Operation failed, there is an existing task with the same title.'})
 
+        # update the instance fields
         instance.title = title
         instance.description = description
         instance.status = status
         instance.deadline = deadline
+
+        # save the instance
         instance.save()
 
+        # return the updated instance
         return instance

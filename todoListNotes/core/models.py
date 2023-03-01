@@ -1,14 +1,17 @@
-from django.db import models
-from django.contrib.auth.models import User
+# import models
+from django.db                      import models
+# import User model
+from django.contrib.auth.models     import User
+# import datetime
 import datetime
 
-from utils.model_abstracts import Model
-from django_extensions.db.models import (
-    TimeStampedModel,
-    ActivatorModel,
-    TitleDescriptionModel
-)
+# import abstract class from utils
+from utils.model_abstracts          import Model
+# import abstract classes
+from django_extensions.db.models    import (TimeStampedModel, ActivatorModel, TitleDescriptionModel)
 
+
+# custom abstract class for 'is_active' field
 class CustomActivatorModel(models.Model):
     STATUS_CHOICES = (
         ('active', 'Active'),
@@ -20,6 +23,7 @@ class CustomActivatorModel(models.Model):
     class Meta:
         abstract = True
 
+# Task model that inherits abstract model classes
 class Task(
     TimeStampedModel,
     TitleDescriptionModel,
@@ -28,14 +32,19 @@ class Task(
     ):
 
     class Meta:
+        # verbose_name for single object
         verbose_name = "Task"
+        # verbose_name for multiple objects
         verbose_name_plural = "Tasks"
+        # default ordering
         ordering = ["id"]
 
+    # additional fields
     status = models.CharField(max_length=50, default='Pending')
     deadline = models.DateField(null=False, blank=False)
     date_created = models.DateField(default=datetime.date.today)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
+    # generate string representation
     def __str__(self):
         return f'{self.title} {self.description}'

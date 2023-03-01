@@ -28,4 +28,4 @@ class Task(
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f'{self.user.username} {self.title} {self.description}'
+        return f'{self.title} {self.description}'

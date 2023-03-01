@@ -9,11 +9,21 @@ from django_extensions.db.models import (
     TitleDescriptionModel
 )
 
+class CustomActivatorModel(models.Model):
+    STATUS_CHOICES = (
+        ('active', 'Active'),
+        ('inactive', 'Inactive'),
+    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        abstract = True
 
 class Task(
     TimeStampedModel,
-    ActivatorModel,
     TitleDescriptionModel,
+    CustomActivatorModel,
     Model
     ):
 

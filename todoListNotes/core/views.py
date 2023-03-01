@@ -2,12 +2,13 @@ from django.shortcuts import render
 
 from json import JSONDecodeError
 from django.http import JsonResponse
+from django.db import IntegrityError
 
 from rest_framework.response import Response
 from rest_framework import views, viewsets, status
 from rest_framework.parsers import JSONParser
 from rest_framework.authtoken.models import Token
-
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 
@@ -23,6 +24,8 @@ from . serializers import RegistrationSerializer, TaskSerializer
 from . models import Task
 
 from datetime                       import datetime, date
+
+from django.core.exceptions import ObjectDoesNotExist
 
 class RegisterAPIView(views.APIView):
 
@@ -61,6 +64,10 @@ class RegisterAPIView(views.APIView):
                 'result': 'error',
                 'message': 'JSON decoding error'
             }, status=400)
+        except IntegrityError:
+            return Response({
+                'message': 'Username already exists'
+            }, status=status.HTTP_400_BAD_REQUEST)
         
 class TaskViewSet(
         ListModelMixin,
@@ -142,3 +149,30 @@ class TaskViewSet(
                 'result': 'error',
                 'message': 'JSON decoding error'
             }, status=400)
+        
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def archive_or_activate_task(request, pk):
+
+    try:
+        task = Task.objects.get(id=pk)
+
+        if request.method == 'PATCH':
+
+            task.is_active = not task.is_active
+            message = 'Task activated successfully' if task.is_active else 'Task archived successfully'
+
+            task.save()
+            serializer = TaskSerializer(task)
+
+            result = {
+                "message": message,
+                "details": serializer.data
+            }
+
+            return Response(result, status=status.HTTP_200_OK)
+    
+    except Task.DoesNotExist:
+        return Response({'error': 'Task not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    

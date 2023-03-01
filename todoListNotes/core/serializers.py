@@ -19,8 +19,6 @@ class StrippedCharField(serializers.CharField):
         return super().to_internal_value(data)
 
 # custom serializer to remove leading and trailing commas on DateFields
-
-
 class StrippedDateField(serializers.DateField):
     default_format = '%Y-%m-%d'
 
@@ -104,7 +102,7 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ('title', 'description', 'status',
-                  'deadline', 'date_created', 'user')
+                  'deadline', 'date_created', 'user', 'is_active')
         read_only_fields = ('user',)
 
     def validate(self, res: OrderedDict):

@@ -378,6 +378,37 @@ def set_as_admin(request, pk):
                 
                 elif user and user.is_superuser == True:
                     return Response({'error': 'User is already a superuser'}, status=status.HTTP_400_BAD_REQUEST)
+                
+            except User.DoesNotExist:
+                return Response({'error': 'User does not exists'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'forbidden': 'You are not allowed to access this endpoint'}, status=status.HTTP_403_FORBIDDEN)
+    else:
+        return Response('error', 'Incorrect HTTP method')
+    
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def set_as_normal_user(request, pk):
+    if request.method == 'PATCH':
+        if request.user.is_superuser:
+            try:
+                user = User.objects.get(id=pk)
+
+                if user and user.is_superuser == True:
+                    user.is_superuser = False
+                    user.save()
+                    serializer = UserSerializer(user)
+
+                    result = {
+                        'message': f'Successfully revert {user.username} as normal user',
+                        'details': serializer.data
+                    }
+
+                    return Response(result, status=status.HTTP_200_OK)
+                
+                elif user and user.is_superuser == False:
+                    return Response({'error': 'User is already a normal user'}, status=status.HTTP_400_BAD_REQUEST)
+                
             except User.DoesNotExist:
                 return Response({'error': 'User does not exists'}, status=status.HTTP_400_BAD_REQUEST)
         else:

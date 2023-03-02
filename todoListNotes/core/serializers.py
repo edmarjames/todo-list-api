@@ -13,21 +13,24 @@ from collections                    import OrderedDict
 # import date dependencies
 from datetime                       import datetime, date
 
+import re
+
 
 # custom serializer to remove leading and trailing commas on CharFields
 class StrippedCharField(serializers.CharField):
     def to_internal_value(self, data):
         if isinstance(data, str):
-            data = data.strip()
+            data = re.sub(r'^[\s,\.]+|[\s,\.]+$', '', data.strip())
         return super().to_internal_value(data)
 
 # custom serializer to remove leading and trailing commas on DateFields
 class StrippedDateField(serializers.DateField):
     default_format = '%Y-%m-%d'
+    pattern = r'^\s*|\s*[,.]|\s*$'
 
     def to_internal_value(self, data):
         if isinstance(data, str):
-            data = data.strip()
+            data = re.sub(self.pattern, '', data.strip())
         return super().to_internal_value(data)
 
     def to_representation(self, value):

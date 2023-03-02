@@ -48,3 +48,20 @@ class Task(
     # generate string representation
     def __str__(self):
         return f'{self.title} {self.description}'
+    
+
+class Note(
+    TimeStampedModel,
+    ActivatorModel,
+    TitleDescriptionModel,
+    Model
+    ):
+
+    class Meta:
+        verbose_name =  "Note"
+        verbose_name_plural = "Notes"
+        ordering = ["id"]
+
+    date_created = models.DateField(default=datetime.date.today)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+

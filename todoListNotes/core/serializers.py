@@ -5,7 +5,7 @@ from rest_framework.exceptions      import APIException
 
 # import needed models
 from django.contrib.auth.models     import User
-from . models                       import Task
+from . models                       import Task, Note
 
 # import OrderedDict
 from collections                    import OrderedDict
@@ -175,3 +175,34 @@ class TaskSerializer(serializers.ModelSerializer):
 
         # return the updated instance
         return instance
+    
+
+class NoteSerializer(serializers.ModelSerializer):
+
+    title = StrippedCharField(required=True)
+    content = StrippedCharField(source='description', required=True)
+    date_created = StrippedDateField(required=False)
+    user = serializers.ReadOnlyField(source='user.username', required=False)
+
+    class Meta:
+        model = Note
+        fields = ['title', 'content', 'date_created', 'user']
+        read_only_fields = ('user',)
+
+    def save(self):
+
+        title = self.validated_data['title']
+        all_titles = Note.objects.values_list('title', flat=True)
+
+        for titles in all_titles:
+            if title == titles:
+                raise serializers.ValidationError({'title': 'Operation failed, there is an existing note with the same title.'})
+            
+        note = Note (
+            title = title,
+            content = self.validated_data['content'],
+            user = self.validated_data['user']
+        )
+
+        note.save()
+

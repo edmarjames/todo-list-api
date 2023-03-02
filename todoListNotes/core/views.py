@@ -16,10 +16,12 @@ from rest_framework.permissions         import IsAuthenticated
 from rest_framework.mixins              import (ListModelMixin, UpdateModelMixin, RetrieveModelMixin, CreateModelMixin, DestroyModelMixin)
 
 # import needed serializers
-from . serializers                      import RegistrationSerializer, TaskSerializer, NoteSerializer
+from . serializers                      import RegistrationSerializer, TaskSerializer, NoteSerializer, UserSerializer
 
 # import needed model/s
+from django.contrib.auth.models         import User
 from . models                           import Task, Note
+
 
 # import other dependencies
 from datetime                           import date
@@ -339,5 +341,49 @@ def get_all_notes(request):
             return Response({'forbidden': 'You are not allowed to access this endpoint'}, status=status.HTTP_403_FORBIDDEN)
     else:
         return Response('error', 'Incorrect HTTP method')
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_users(request):
+    if request.method == 'GET':
+        if request.user.is_superuser:
+            all_user = User.objects.all()
+            serializer = UserSerializer(all_user, many=True)
 
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'forbidden': 'You are not allowed to access this endpoint'}, status=status.HTTP_403_FORBIDDEN)
+    else:
+        return Response('error', 'Incorrect HTTP method')
+    
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def set_as_admin(request, pk):
+    if request.method == 'PATCH':
+        if request.user.is_superuser:
+            try:
+                user = User.objects.get(id=pk)
+
+                if user and user.is_superuser == False:
+                    user.is_superuser = True
+                    user.save()
+                    serializer = UserSerializer(user)
+
+                    result = {
+                        'message': f'Successfully set {user.username} as admin',
+                        'details': serializer.data
+                    }
+
+                    return Response(result, status=status.HTTP_200_OK)
+                
+                elif user and user.is_superuser == True:
+                    return Response({'error': 'User is already a superuser'}, status=status.HTTP_400_BAD_REQUEST)
+            except User.DoesNotExist:
+                return Response({'error': 'User does not exists'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'forbidden': 'You are not allowed to access this endpoint'}, status=status.HTTP_403_FORBIDDEN)
+    else:
+        return Response('error', 'Incorrect HTTP method')
+    
+            
 

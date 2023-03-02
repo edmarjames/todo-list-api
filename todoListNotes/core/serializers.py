@@ -221,3 +221,10 @@ class NoteSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+    
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email', 'is_superuser']

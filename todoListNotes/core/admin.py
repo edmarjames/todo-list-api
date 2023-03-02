@@ -10,6 +10,7 @@ class TaskAdmin(admin.ModelAdmin):
     # list the fields to display
     list_display = ('title', 'description', 'status', 'is_active', 'created', 'modified')
 
+# register the Note model to admin interface
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'created', 'modified')

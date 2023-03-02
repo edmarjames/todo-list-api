@@ -8,7 +8,7 @@ import datetime
 # import abstract class from utils
 from utils.model_abstracts          import Model
 # import abstract classes
-from django_extensions.db.models    import (TimeStampedModel, ActivatorModel, TitleDescriptionModel)
+from django_extensions.db.models    import (TimeStampedModel, TitleDescriptionModel)
 
 
 # custom abstract class for 'is_active' field
@@ -49,6 +49,7 @@ class Task(
         return f'{self.title} {self.description}'
     
 
+# Note model that inherits abstract model classes
 class Note(
     TimeStampedModel,
     TitleDescriptionModel,
@@ -56,10 +57,17 @@ class Note(
     ):
 
     class Meta:
+        # verbose_name for single object
         verbose_name =  "Note"
+        # verbose_name for multiple objects
         verbose_name_plural = "Notes"
+        # default ordering
         ordering = ["id"]
 
-    # date_created = models.DateField(default=datetime.date.today)
+    # additional fields
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
+    # generate string representation
+    def __str__(self):
+        return f'{self.title} {self.description}'
 

@@ -1,6 +1,5 @@
 # import dependencies from rest_framework
 from rest_framework                 import serializers, status
-# from rest_framework.fields          import CharField, DateField
 from rest_framework.exceptions      import APIException
 
 # import needed models
@@ -13,17 +12,19 @@ from collections                    import OrderedDict
 # import date dependencies
 from datetime                       import datetime, date
 
+# import re for regex
 import re
 
 
-# custom serializer to remove leading and trailing commas on CharFields
+# custom serializer to remove leading and trailing whitespace, period and comma on CharFields
 class StrippedCharField(serializers.CharField):
     def to_internal_value(self, data):
         if isinstance(data, str):
             data = re.sub(r'^[\s,\.]+|[\s,\.]+$', '', data.strip())
         return super().to_internal_value(data)
 
-# custom serializer to remove leading and trailing commas on DateFields
+
+# custom serializer to remove leading and trailing whitespace, period and comma on DateFields
 class StrippedDateField(serializers.DateField):
     default_format = '%Y-%m-%d'
     pattern = r'^[\s,\.]+|[\s,\.]+$'
@@ -38,6 +39,7 @@ class StrippedDateField(serializers.DateField):
             return value.strftime(self.default_format)
         return value
 
+
 # custom exception if the deadline date is in the past
 class DateIsInPastException(APIException):
     status_code = status.HTTP_400_BAD_REQUEST
@@ -45,6 +47,7 @@ class DateIsInPastException(APIException):
     default_code = 'invalid'
 
 
+# serializer for Registration
 class RegistrationSerializer(serializers.ModelSerializer):
 
     # define validations on fields. The write-only fields means that it is accepted during POST requests, but it will not be included in GET requests.
@@ -96,6 +99,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
+# serializer for Task
 class TaskSerializer(serializers.ModelSerializer):
 
     # declare user as read-only so that it is not required during deserialization
@@ -106,7 +110,7 @@ class TaskSerializer(serializers.ModelSerializer):
     deadline = StrippedDateField(required=True)
 
     class Meta:
-        # define mode
+        # define model
         model = Task
         # define the fields to be serialize/deserialize
         fields = ['title', 'description', 'status',
@@ -177,54 +181,73 @@ class TaskSerializer(serializers.ModelSerializer):
 
         # return the updated instance
         return instance
-    
 
+
+# serializer for Note
 class NoteSerializer(serializers.ModelSerializer):
 
+    # declare user as read-only so that it is not required during deserialization
     title = StrippedCharField(required=True)
     content = StrippedCharField(source='description', required=True)
     user = serializers.ReadOnlyField(source='user.username', required=False)
 
     class Meta:
+        # define mode
         model = Note
+        # define the fields to be serialize/deserialize
         fields = ['title', 'content', 'created', 'modified', 'user']
         read_only_fields = ('user',)
 
+    # override the save method
     def save(self):
-
+        # get the 'title' validated data
         title = self.validated_data['title']
+        # get all titles from Note model
         all_titles = Note.objects.values_list('title', flat=True)
 
+        # loop through the all_titles list
         for titles in all_titles:
+            # if the title is already existing
             if title == titles:
+                # raise a ValidationError
                 raise serializers.ValidationError({'title': 'Operation failed, there is an existing note with the same title.'})
             
+        # create the note instance and populate the fields
         note = Note (
             title = title,
             description = self.validated_data['description'],
             user = self.validated_data['user']
         )
 
+        # save the created note
         note.save()
 
+    # override the update method
     def update(self, instance, validated_data):
-
+        # get the fields you want to update
         title = validated_data.get('title', instance.title)
         description = validated_data.get('description', instance.description)
 
+        # Check if there is a note with the same title, except for the current instance
         if Note.objects.filter(title=title).exclude(pk=instance.pk).exists():
             raise serializers.ValidationError({'title', 'Operation failed, there is an existing note with the same title'})
         
+        # update the instance fields
         instance.title = title
         instance.description = description
 
+        # save the instance
         instance.save()
 
+        # return the updated instance
         return instance
     
 
+# serializer for user
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
+        # define model
         model = User
+        # define the fields to be serialize/deserialize
         fields = ['username', 'first_name', 'last_name', 'email', 'is_superuser']

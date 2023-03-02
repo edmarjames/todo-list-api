@@ -16,6 +16,9 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
+# import pytz for timezone
+import pytz
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -114,11 +117,15 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Manila'
 
 USE_I18N = True
 
 USE_TZ = True
+
+DATE_FORMAT = 'M j, Y'
+TIME_FORMAT = 'g:i A'
+DATETIME_FORMAT = f'{DATE_FORMAT} {TIME_FORMAT}'
 
 
 # Static files (CSS, JavaScript, Images)

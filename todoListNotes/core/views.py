@@ -182,7 +182,7 @@ class TaskViewSet(
 
             # dict to store the message
             result = {
-                "message": "Task successfully deleted",
+                "message": "Task successfully deleted"
             }
 
             # return the 'result' dict with 200 status code
@@ -289,6 +289,22 @@ class NoteViewSet(
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        except JSONDecodeError:
+            return JsonResponse({
+                'result': 'error',
+                'message': 'JSON decoding error'
+            }, status=400)
+        
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+
+            result = {
+                'message': 'Note Successfully deleted'
+            }
+
+            return Response(result, status=status.HTTP_200_OK)
         except JSONDecodeError:
             return JsonResponse({
                 'result': 'error',

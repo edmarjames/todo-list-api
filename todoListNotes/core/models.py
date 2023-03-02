@@ -40,9 +40,8 @@ class Task(
         ordering = ["id"]
 
     # additional fields
-    status = models.CharField(max_length=50, default='Pending')
+    status = models.CharField(max_length=50, default='pending')
     deadline = models.DateField(null=False, blank=False)
-    date_created = models.DateField(default=datetime.date.today)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     # generate string representation

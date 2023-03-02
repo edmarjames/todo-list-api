@@ -104,14 +104,13 @@ class TaskSerializer(serializers.ModelSerializer):
     description = StrippedCharField(required=True)
     status = StrippedCharField(required=False)
     deadline = StrippedDateField(required=True)
-    date_created = StrippedDateField(required=False)
 
     class Meta:
         # define mode
         model = Task
         # define the fields to be serialize/deserialize
         fields = ['title', 'description', 'status',
-                  'deadline', 'date_created', 'user', 'is_active']
+                  'deadline', 'created', 'modified', 'user', 'is_active']
         read_only_fields = ('user',)
 
     # override the validate method
@@ -144,9 +143,9 @@ class TaskSerializer(serializers.ModelSerializer):
 
         # create the task instance and populate the fields
         task = Task(
+            title=title,
             description=self.validated_data['description'],
             deadline=self.validated_data['deadline'],
-            title=title,
             # gets the currently authenticated user
             user=self.validated_data['user']
         )

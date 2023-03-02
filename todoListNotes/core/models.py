@@ -52,7 +52,6 @@ class Task(
 
 class Note(
     TimeStampedModel,
-    ActivatorModel,
     TitleDescriptionModel,
     Model
     ):
@@ -62,6 +61,6 @@ class Note(
         verbose_name_plural = "Notes"
         ordering = ["id"]
 
-    date_created = models.DateField(default=datetime.date.today)
+    # date_created = models.DateField(default=datetime.date.today)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 

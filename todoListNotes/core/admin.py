@@ -12,4 +12,4 @@ class TaskAdmin(admin.ModelAdmin):
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description', 'date_created')
+    list_display = ('title', 'description', 'created', 'modified')

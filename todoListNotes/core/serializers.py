@@ -181,12 +181,11 @@ class NoteSerializer(serializers.ModelSerializer):
 
     title = StrippedCharField(required=True)
     content = StrippedCharField(source='description', required=True)
-    date_created = StrippedDateField(required=False)
     user = serializers.ReadOnlyField(source='user.username', required=False)
 
     class Meta:
         model = Note
-        fields = ['title', 'content', 'date_created', 'user', 'status']
+        fields = ['title', 'content', 'created', 'modified', 'user']
         read_only_fields = ('user',)
 
     def save(self):

@@ -206,3 +206,17 @@ class NoteSerializer(serializers.ModelSerializer):
 
         note.save()
 
+    def update(self, instance, validated_data):
+
+        title = validated_data.get('title', instance.title)
+        description = validated_data.get('description', instance.description)
+
+        if Note.objects.filter(title=title).exclude(pk=instance.pk).exists():
+            raise serializers.ValidationError({'title', 'Operation failed, there is an existing note with the same title'})
+        
+        instance.title = title
+        instance.description = description
+
+        instance.save()
+
+        return instance

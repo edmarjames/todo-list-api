@@ -8,7 +8,7 @@ from . models           import Task, Note
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     # list the fields to display
-    list_display = ('title', 'description', 'status')
+    list_display = ('title', 'description', 'status', 'is_active')
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):

@@ -269,3 +269,28 @@ class NoteViewSet(
                 'result': 'error',
                 'message': 'JSON decoding error'
             }, status=400)
+        
+    def update(self, request, *args, **kwargs):
+        try:
+            partial = kwargs.pop('partial', True)
+            instance = self.get_object()
+            data = JSONParser().parse(request)
+            serializer = self.get_serializer(instance, data=data, partial=partial)
+
+            if serializer.is_valid(raise_exception=True):
+                serializer.update(instance, serializer.validated_data)
+
+                result = {
+                    'message': 'Note successfully updated',
+                    'details': serializer.data
+                }
+
+                return Response(result, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except JSONDecodeError:
+            return JsonResponse({
+                'result': 'error',
+                'message': 'JSON decoding error'
+            }, status=400)

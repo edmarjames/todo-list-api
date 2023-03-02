@@ -6,11 +6,12 @@ from rest_framework.authtoken.views     import obtain_auth_token
 from rest_framework                     import routers
 
 # import all views
-from . views                            import (RegisterAPIView, TaskViewSet, archive_or_activate_task)
+from . views                            import (RegisterAPIView, TaskViewSet, archive_or_activate_task, NoteViewSet)
 
 # A new instance of the DefaultRouter is created using router = routers.DefaultRouter(). This is a convenience class that automatically generates the URL patterns for the API views registered with it.
 router = routers.DefaultRouter()
 router.register(r'task', TaskViewSet, basename='task')
+router.register(r'note', NoteViewSet, basename='note')
 
 # The urlpatterns list is then defined using the router's generated URL patterns
 urlpatterns = router.urls

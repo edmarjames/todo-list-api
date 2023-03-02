@@ -16,10 +16,10 @@ from rest_framework.permissions         import IsAuthenticated
 from rest_framework.mixins              import (ListModelMixin, UpdateModelMixin, RetrieveModelMixin, CreateModelMixin, DestroyModelMixin)
 
 # import needed serializers
-from . serializers                      import RegistrationSerializer, TaskSerializer
+from . serializers                      import RegistrationSerializer, TaskSerializer, NoteSerializer
 
 # import needed model/s
-from . models                           import Task
+from . models                           import Task, Note
 
 # import other dependencies
 from datetime                           import date
@@ -227,5 +227,45 @@ def archive_or_activate_task(request, pk):
     except Task.DoesNotExist:
         # returns an error if the task does not exist with 404 status code
         return Response({'error': 'Task not found'}, status=status.HTTP_404_NOT_FOUND)
-
     
+
+class NoteViewSet(
+    ListModelMixin,
+    RetrieveModelMixin,
+    UpdateModelMixin,
+    CreateModelMixin,
+    DestroyModelMixin,
+    viewsets.GenericViewSet
+    ):
+
+    permission_classes = (IsAuthenticated,)
+
+    serializer_class = NoteSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Note.objects.filter(user=user)
+    
+    def create(self, request, *args, **kwargs):
+        try:
+            data = JSONParser().parse(request)
+            serializer = NoteSerializer(data=data)
+
+            if serializer.is_valid(raise_exception=True):
+                serializer.validated_data['user'] = request.user
+                serializer.save()
+
+                result = {
+                    'message': 'Successfully added a new note',
+                    'details': serializer.data
+                }
+
+                return Response(result, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except JSONDecodeError:
+            return JsonResponse({
+                'result': 'error',
+                'message': 'JSON decoding error'
+            }, status=400)

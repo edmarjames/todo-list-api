@@ -186,7 +186,7 @@ class NoteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Note
-        fields = ['title', 'content', 'date_created', 'user']
+        fields = ['title', 'content', 'date_created', 'user', 'status']
         read_only_fields = ('user',)
 
     def save(self):
@@ -200,7 +200,7 @@ class NoteSerializer(serializers.ModelSerializer):
             
         note = Note (
             title = title,
-            content = self.validated_data['content'],
+            description = self.validated_data['description'],
             user = self.validated_data['user']
         )
 

@@ -195,8 +195,8 @@ class TaskViewSet(
             }, status=400)
 
 # function based APIview for archive and activate task
-@api_view(['PATCH'])
 # allow only authenticated users to access the endpoint
+@api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def archive_or_activate_task(request, pk):
     try:
@@ -310,3 +310,34 @@ class NoteViewSet(
                 'result': 'error',
                 'message': 'JSON decoding error'
             }, status=400)
+        
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_tasks(request):
+    if request.method == 'GET':
+        if request.user.is_superuser:
+            all_tasks = Task.objects.all()
+            serializer = TaskSerializer(all_tasks, many=True)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'forbidden': 'You are not allowed to access this endpoint'}, status=status.HTTP_403_FORBIDDEN)
+    else:
+        return Response('error', 'Incorrect HTTP method')
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_notes(request):
+    if request.method == 'GET':
+        if request.user.is_superuser:
+            all_notes = Note.objects.all()
+            serializer = NoteSerializer(all_notes, many=True)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'forbidden': 'You are not allowed to access this endpoint'}, status=status.HTTP_403_FORBIDDEN)
+    else:
+        return Response('error', 'Incorrect HTTP method')
+
+

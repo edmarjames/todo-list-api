@@ -26,7 +26,7 @@ class StrippedCharField(serializers.CharField):
 # custom serializer to remove leading and trailing commas on DateFields
 class StrippedDateField(serializers.DateField):
     default_format = '%Y-%m-%d'
-    pattern = r'^\s*|\s*[,.]|\s*$'
+    pattern = r'^[\s,\.]+|[\s,\.]+$'
 
     def to_internal_value(self, data):
         if isinstance(data, str):

@@ -20,6 +20,8 @@ from django.urls        import include, path
 # import router from rest_framework
 from rest_framework     import routers
 
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 # A new instance of the DefaultRouter is created using router = routers.DefaultRouter(). This is a convenience class that automatically generates the URL patterns for the API views registered with it.
 router = routers.DefaultRouter()
 
@@ -31,3 +33,5 @@ urlpatterns += [
     path('admin/', admin.site.urls),
     path('', include('core.urls'))
 ]
+
+urlpatterns += staticfiles_urlpatterns()

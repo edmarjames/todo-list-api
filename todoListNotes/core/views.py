@@ -11,6 +11,7 @@ from rest_framework.parsers             import JSONParser
 from rest_framework                     import views, viewsets, status
 from rest_framework.decorators          import api_view, permission_classes
 from rest_framework.permissions         import IsAuthenticated
+from rest_framework.authtoken.views     import ObtainAuthToken
 
 # import mixins from rest_framework
 from rest_framework.mixins              import (ListModelMixin, UpdateModelMixin, RetrieveModelMixin, CreateModelMixin, DestroyModelMixin)
@@ -26,6 +27,30 @@ from . models                           import Task, Note
 # import other dependencies
 from datetime                           import date
 from django.db                          import IntegrityError
+
+
+# custom login view to include the 'is_superuser' field of a user
+class CustomAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        # get the username and password from the request body
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+
+        # check if serializer is valid
+        if serializer.is_valid(raise_exception=True):
+            # store the validated user to the 'user' variable
+            user = serializer.validated_data['user']
+            # using get_or_create to get the token of the user or create a new one if there is not existing token
+            token, created = Token.objects.get_or_create(user=user)
+
+            # dict to store the token, is_superuser and new_token_created
+            result = {
+                'token': token.key,
+                'is_superuser': user.is_superuser,
+                'new_token_created': created
+            }
+
+            # return the result dict with 200 status code
+            return Response(result, status=status.HTTP_200_OK)
 
 
 # class based APIView for register route
@@ -85,6 +110,7 @@ class RegisterAPIView(views.APIView):
                 'message': 'Username already exists'
             }, status=status.HTTP_400_BAD_REQUEST)
       
+
 # ViewSet for Task which inherits mixins for list, retrieve, update, create and delete
 class TaskViewSet(
         ListModelMixin,
@@ -196,35 +222,84 @@ class TaskViewSet(
                 'message': 'JSON decoding error'
             }, status=400)
 
+
 # function based APIview for archive and activate task
 # allow only authenticated users to access the endpoint
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
-def archive_or_activate_task(request, pk):
+def archive_task(request, pk):
     try:
         # get the task object using its pk
         task = Task.objects.get(id=pk)
 
         # checks if the HTTP method is PATCH
         if request.method == 'PATCH':
-            # reverse the status of a task from False to True and vice versa
-            task.is_active = not task.is_active
-            # modify the message string whether the task is active or not
-            message = 'Task activated successfully' if task.is_active else 'Task archived successfully'
+            # reverse the status of a task from True to False
+            if task.is_active == True:
+                task.is_active = False
+                message = 'Task archived successfully'
 
-            # save the task
-            task.save()
-            # serialize the data
-            serializer = TaskSerializer(task)
+                # save the task
+                task.save()
+                # serialize the data
+                serializer = TaskSerializer(task)
 
-            # dict to store the message and serialized data
-            result = {
-                "message": message,
-                "details": serializer.data
-            }
+                # dict to store the message and serialized data
+                result = {
+                    "message": message,
+                    "details": serializer.data
+                }
 
-            # return the 'result' dict with 200 status code
-            return Response(result, status=status.HTTP_200_OK)
+                # return the 'result' dict with 200 status code
+                return Response(result, status=status.HTTP_200_OK)
+            
+            # if task is already archived
+            elif task.is_active == False:
+                # return an error message with 400 status code
+                return Response({'error': 'Task is already archived'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            # returns an error if HTTP method is not PATCH with 405 status code
+            return Response({'error', 'Incorrect HTTP method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+    except Task.DoesNotExist:
+        # returns an error if the task does not exist with 404 status code
+        return Response({'error': 'Task not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+
+# function based APIview for archive and activate task
+# allow only authenticated users to access the endpoint
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def activate_task(request, pk):
+    try:
+        # get the task object using its pk
+        task = Task.objects.get(id=pk)
+
+        # checks if the HTTP method is PATCH
+        if request.method == 'PATCH':
+            # reverse the status of a task from False to True
+            if task.is_active == False:
+                task.is_active = True
+                message = 'Task activated successfully'
+
+                # save the task
+                task.save()
+                # serialize the data
+                serializer = TaskSerializer(task)
+
+                # dict to store the message and serialized data
+                result = {
+                    "message": message,
+                    "details": serializer.data
+                }
+
+                # return the 'result' dict with 200 status code
+                return Response(result, status=status.HTTP_200_OK)
+            
+            # if task is already activated
+            elif task.is_active == True:
+                # return an error message with 400 status code
+                return Response({'error': 'Task is already activated'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             # returns an error if HTTP method is not PATCH with 405 status code
             return Response({'error', 'Incorrect HTTP method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

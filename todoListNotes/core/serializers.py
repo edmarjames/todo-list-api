@@ -15,6 +15,10 @@ from datetime                       import datetime, date
 # import re for regex
 import re
 
+# import EmailField and validate_email
+from django.core.validators         import validate_email
+from django.forms import            EmailField
+
 
 # custom serializer to remove leading and trailing whitespace, period and comma on CharFields
 class StrippedCharField(serializers.CharField):
@@ -40,6 +44,14 @@ class StrippedDateField(serializers.DateField):
         return value
 
 
+# custom serializer to remove leading and trailing whitespace, period and comma on EmailField while still using the email validation
+class StrippedEmailField(EmailField):
+    def to_python(self, value):
+        value = value.strip('., \t\n\r')  # strip leading and trailing period, comma, and whitespace
+        value = super().to_python(value)  # use the built-in EmailField validation
+        return value
+
+
 # custom exception if the deadline date is in the past
 class DateIsInPastException(APIException):
     status_code = status.HTTP_400_BAD_REQUEST
@@ -52,7 +64,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     # define validations on fields. The write-only fields means that it is accepted during POST requests, but it will not be included in GET requests.
     username = StrippedCharField(required=True)
-    email = StrippedCharField(required=True)
+    email = StrippedEmailField(required=True)
     first_name = StrippedCharField(required=True)
     last_name = StrippedCharField(required=True)
     password = StrippedCharField(write_only=True, required=True)

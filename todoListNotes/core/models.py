@@ -43,6 +43,7 @@ class Task(
     status = models.CharField(max_length=50, default='pending')
     deadline = models.DateField(null=False, blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    color = models.CharField(max_length=50, null=True, blank=False)
 
     # generate string representation
     def __str__(self):

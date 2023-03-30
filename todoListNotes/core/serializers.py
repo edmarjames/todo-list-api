@@ -120,13 +120,14 @@ class TaskSerializer(serializers.ModelSerializer):
     description = StrippedCharField(required=True)
     status = StrippedCharField(required=False)
     deadline = StrippedDateField(required=True)
+    color = StrippedCharField(required=True)
 
     class Meta:
         # define model
         model = Task
         # define the fields to be serialize/deserialize
         fields = ['title', 'description', 'status',
-                  'deadline', 'created', 'modified', 'user', 'is_active']
+                  'deadline', 'color', 'created', 'modified', 'user', 'is_active']
         read_only_fields = ('user',)
 
     # override the validate method
@@ -162,6 +163,7 @@ class TaskSerializer(serializers.ModelSerializer):
             title=title,
             description=self.validated_data['description'],
             deadline=self.validated_data['deadline'],
+            color=self.validated_data['color'],
             # gets the currently authenticated user
             user=self.validated_data['user']
         )
@@ -176,6 +178,7 @@ class TaskSerializer(serializers.ModelSerializer):
         description = validated_data.get('description', instance.description)
         status = validated_data.get('status', instance.status)
         deadline = validated_data.get('deadline', instance.deadline)
+        color = validated_data.get('color', instance.color)
 
         # Check if there is a task with the same title, except for the current instance
         if Task.objects.filter(title=title).exclude(pk=instance.pk).exists():
@@ -187,6 +190,7 @@ class TaskSerializer(serializers.ModelSerializer):
         instance.description = description
         instance.status = status
         instance.deadline = deadline
+        instance.color = color
 
         # save the instance
         instance.save()

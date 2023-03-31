@@ -67,6 +67,7 @@ class Note(
 
     # additional fields
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    color = models.CharField(max_length=50, null=True, blank=False)
 
     # generate string representation
     def __str__(self):

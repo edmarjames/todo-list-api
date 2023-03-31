@@ -206,12 +206,13 @@ class NoteSerializer(serializers.ModelSerializer):
     title = StrippedCharField(required=True)
     content = StrippedCharField(source='description', required=True)
     user = serializers.ReadOnlyField(source='user.username', required=False)
+    color = StrippedCharField(required=True)
 
     class Meta:
         # define mode
         model = Note
         # define the fields to be serialize/deserialize
-        fields = ['title', 'content', 'created', 'modified', 'user']
+        fields = ['title', 'content', 'color', 'created', 'modified', 'user']
         read_only_fields = ('user',)
 
     # override the save method
@@ -232,6 +233,7 @@ class NoteSerializer(serializers.ModelSerializer):
         note = Note (
             title = title,
             description = self.validated_data['description'],
+            color = self.validated_data['color'],
             user = self.validated_data['user']
         )
 
@@ -243,6 +245,7 @@ class NoteSerializer(serializers.ModelSerializer):
         # get the fields you want to update
         title = validated_data.get('title', instance.title)
         description = validated_data.get('description', instance.description)
+        color = validated_data.get('color', instance.color)
 
         # Check if there is a note with the same title, except for the current instance
         if Note.objects.filter(title=title).exclude(pk=instance.pk).exists():
@@ -251,6 +254,7 @@ class NoteSerializer(serializers.ModelSerializer):
         # update the instance fields
         instance.title = title
         instance.description = description
+        instance.color = color
 
         # save the instance
         instance.save()

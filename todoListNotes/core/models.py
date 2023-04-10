@@ -40,7 +40,7 @@ class Task(
         ordering = ["id"]
 
     # additional fields
-    status = models.CharField(max_length=50, default='pending')
+    status = models.CharField(max_length=50, default='Pending')
     deadline = models.DateField(null=False, blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     color = models.CharField(max_length=50, null=True, blank=False)

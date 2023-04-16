@@ -103,35 +103,25 @@ I created this API to apply what I have learned on creating REST API using Djang
     - **Validation**
         - Checks if the taskId is existing.
 
-8. [Add to cart](https://capstone-2-bautista.onrender.com/users/addToCart)
-    - This **POST** route allows authenticated users to add single or multiple products to the cart. It requires a bearer token of the user and the request body is in JSON format and requires the following.
-        - productId
-        - quantity
+8. [Archive task](https://todo-list-notes-api.onrender.com/tasks/archive/0e772e85-ac72-4c51-824a-8779c352cb22)
+    - This **PATCH** route allows the authenticated users to archive a specific task. The URL requires a taskId parameter. Please see route below. 
 
-    - If the user wants to create multiple orders at the same time. He/she may wrap the request body with square brackets. Please refer to the snippet below.
+        **`https://todo-list-notes-api.onrender.com/tasks/archive/taskId`**
 
+    - The API will provide a message as a response, once operation is successful.
 
-        ```
-	    [
-		    {
-		        "productId": "63904850d5002a4a038466cd",
-		        "quantity": 1
-		    },
-		    {
-		        "productId": "639048afd5002a4a038466d1",
-		        "quantity": 2
-		    }
-		]
-        ```
+    - **Validations**
+        - Checks if the taskId is existing.
 
-    - **Validation**
-        - This route is only permitted to non-admin users. The API will provide an error message if an admin tries to access this route.
+9. [Activate task](https://todo-list-notes-api.onrender.com/tasks/activate/4b22c7e8-d12a-4f41-b37a-8ba845d3c5da)
+    - This **PATCH** route allows the authenticated users to activate a specific task. The URL requires a taskId parameter. Please see route below. 
 
-9. [View cart](https://capstone-2-bautista.onrender.com/users/cart)
-    - This **GET** route allows authenticated users to view their cart. It requires a bearer token of the user. The response is in a JavaScript object format.
+        **`https://todo-list-notes-api.onrender.com/tasks/activate/taskId`**
 
-    - **Validation**
-        - This route is only permitted to non-admin users. The API will provide an error message if an admin tries to access this route.
+    - The API will provide a message as a response, once operation is successful.
+
+    - **Validations**
+        - Checks if the taskId is existing.
 
 10. [Remove products from cart](https://capstone-2-bautista.onrender.com/users/cart/remove/639ed63f0cf6a4468acb9ce0)
 	- This **PUT** route allows authenticated users to remove a group of products from their cart. It requires a bearer token of the user and the URL requires an orderId parameter. Please see route below.

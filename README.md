@@ -47,7 +47,7 @@ I created this API to apply what I have learned on creating REST API using Djang
     - **Validation**
     	- The API can determine if the username or password is incorrect and will throw an error message as a response.
 
-3. [Add task](https://todo-list-notes-api.onrender.com/task/)
+3. [Create task](https://todo-list-notes-api.onrender.com/task/)
     - This **POST** route allows authenticated users to create a new task. The request body is in JSON format and requires the following. Take note that the format of the deadline should be **yyyy-MM-dd**
 
         ```
@@ -123,35 +123,21 @@ I created this API to apply what I have learned on creating REST API using Djang
     - **Validations**
         - Checks if the taskId is existing.
 
-10. [Remove products from cart](https://capstone-2-bautista.onrender.com/users/cart/remove/639ed63f0cf6a4468acb9ce0)
-	- This **PUT** route allows authenticated users to remove a group of products from their cart. It requires a bearer token of the user and the URL requires an orderId parameter. Please see route below.
+10. [Create note](https://todo-list-notes-api.onrender.com/note/)
+	- This **POST** route allows authenticated users to create a new note. The request body is in JSON format and requires the following.
 
-	    **`https://capstone-2-bautista.onrender.com/users/cart/remove/:orderId`**
+        ```
+        {
+            "title": "How to migrate migrations on django?",
+            "Content": "run this command on your terminal python manage.py makemigrations"
+        }
+        ```
 
-	- As reference, this is the orderId on the user's cart.
+    - **Validation**
+        - Checks if the title is already existing in the database.
 
-	![orderId](/uploads/ddddb1e0a38c8ca78293361046ed0c77/orderId.png)
-
-	- The API will provide a message as a response, once operation is successful.
-
-	- **Validations**
-		- The API will provide an error message as a response, once the orderId provided is an orderId of a group of products from cart that was already checked out.
-        - This route is only permitted to non-admin users. The API will provide an error message if an admin tries to access this route.
-
-11. [Remove single product](https://capstone-2-bautista.onrender.com/users/cart/removeProduct/639ed63f0cf6a4468acb9ce2)
-    - This **PUT** route allows authenticated users to remove a single product from their cart. It requires a bearer token of the user and the URL requires a productOrderId parameter. Please see route below.
-
-        **`https://capstone-2-bautista.onrender.com/users/cart/removeProduct/:productOrderId`**
-
-    - As reference, this is the productOrderId on the user's cart.
-
-    ![productOrderId](/uploads/d51fa1518f1146523f10870d22f49afb/productOrderId.png)
-
-    - The API will provide a message as a response, once operation is successful.
-
-    - **Validations**
-		- The API will provide an error message as a response, once the productOrderId provided is a productOrderId of a product that was already checked out.
-        - This route is only permitted to non-admin users. The API will provide an error message if an admin tries to access this route.
+11. [Get all notes](https://todo-list-notes-api.onrender.com/note/)
+    - This **GET** route allows the authenticated user to fetch the details of all of his/her created notes. The response is JSON format.
 
 12. [Update product quantity](https://capstone-2-bautista.onrender.com/users/cart/updateQuantity)
     - This **PATCH** route allows authenticated users to update the quantity of a certain product on his/her cart. It requires a bearer token of the user and the request body is in JSON format and requires the following.

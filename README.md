@@ -177,37 +177,8 @@ I created this API to apply what I have learned on creating REST API using Djang
 15. [Get all users tasks](https://todo-list-notes-api.onrender.com/all_tasks)
 	- This **GET** route allows **admin** users to fetch all tasks details of all users. This requires the user to be a superuser and the response is JSON format.
 
-16. [Add product](https://capstone-2-bautista.onrender.com/products/add)
-    - This **POST** route allows **admin** users to add a new product to the database. This requires an admin access token and the request body is in JSON format and requires the following.
-        - name
-        - description
-        - source
-        - price
-
-    - The source here, refers to the image url.
-
-    - If the admin wants to add multiple products at the same time. He/she wrap your request body with square brackets. Please refer to the snippet below.
-
-        ```
-	    [
-		    {
-		        "name": "Item A",
-		        "description": "Item A description",
-		        "source": "https://i.ibb.co/TPx5GDS/product-image-placeholder.jpg",
-		        "price": "100"
-		    },
-		    {
-		        "name": "Item B",
-		        "description": "Item B description",
-		        "source": "https://i.ibb.co/TPx5GDS/product-image-placeholder.jpg",
-		        "price": "200"
-		    }
-		]
-        ```
-
-    - **Validations**
-        - The API will show an error message as a response, if the provided product name is already existing in the database.
-        - This route is only permitted to admin users. The API will provide an error message if a non-admin user tries to access this route.
+16. [Get all users notes](https://todo-list-notes-api.onrender.com/all_notes)
+    - This **GET** route allows **admin** users to fetch all notes details of all users. This requires the user to be a superuser and the response is JSON format.
 
 17. [Update product](https://capstone-2-bautista.onrender.com/products/639ed7800cf6a4468acba0d2)
     - This **PUT** route allows **admin** users to update the details of a specific product. This requires an admin access token and the URL requires a productId parameter. Please see route below. 

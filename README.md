@@ -3,7 +3,6 @@
 + [Routes](#routes)
 + [Upcoming new features](#upcoming-new-features)
 + [Installation](#installation)
-+ [Roadmap](#roadmap)
 + [Project status](#project-status)
 + [Languages and tools](#language-and-tools)
 
@@ -205,40 +204,26 @@ I created this API to apply what I have learned on creating REST API using Djang
 
 ## <a name="#upcoming-new-features"></a>Upcoming New Features
 
-Since my project does not have features yet that are present on popular E-commerce sites nowadays. I am continously developing new features that will transform my app into a real and publishable one.
+What I have in mind is to make the task and notes draggable and make the deleting of each to be a drag and drop action.
 
 Here is an overview of the upcoming features
 
-+ Add shipping address on checkout
-+ Payment options
-+ Order status
-+ Order tracking
-+ Order cancellation
-+ Product review
++ Drag and drop sorting
++ Drag and drop deleting
 
 ## Installation
 
 If you want to checkout the code and install it on your local machine you may clone my repo by simply running this command.
 
-### `git clone git@gitlab.com:batch-211-bautista/capstone-2-bautista.git`
+### `git clone https://github.com/edmarjames/todo-list-api.git`
 
-Then install the packages by simply running.
-
-### `npm install`
-
-Then simply run this command to start it on your localhost.
-
-### `nodemon index.js`
+Then run the index.html using live server.
 
 Please feel free to use your favorite API Testing tool but I recommend using Postman.
 
-## Roadmap
-
-For the future releases, I'm planning to follow the list of my upcoming new features listed above and I will also update this README file once I got new ideas along the way.
-
 ## <a name="#project-status"></a>Project Status
 
-As of now, I'm taking a break on development since I am also going to be busy on Job hunting. But please feel free to check the code and let me know if you find any bugs or potential new features.
+As of now, I'm taking a break on development since I am also going to be busy on my day job. But please feel free to check the code and let me know if you find any bugs or potential new features.
 
 ## <a name="#language-and-tools"></a>Languages and tools used
 

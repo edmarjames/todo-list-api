@@ -34,18 +34,18 @@ I created this API to apply what I have learned on creating REST API using Djang
         - Removes leading and trailing whitespace, comma and period.
         - Checks if password and password2 matches.
 
-2. [Login](https://capstone-2-bautista.onrender.com/users/login)
-    - This **POST** route allows the user to login to the e-commerce api. Upon successful login, the API will provide the generated JSON web token on the response. The request body is in JSON format and requires the following.
+2. [Login](https://todo-list-notes-api.onrender.com/users/login)
+    - This **POST** route allows the user to login to the to-do list api. Upon successful login, the API will provide the generated token, is_superuser field and new_token_created field on the response. The request body is in JSON format and requires the following.
 
     	```
     	{
-		    "email": "jane@mail.com",
-		    "password": "jane1"
+		    "username": "johndoe",
+		    "password": "johndoe1"
 		}
     	```
 
     - **Validation**
-    	- The API can determine if the email or password is incorrect and will throw an error message as a response.
+    	- The API can determine if the username or password is incorrect and will throw an error message as a response.
 
 3. [Get all active products](https://capstone-2-bautista.onrender.com/products/active)
     - This **GET** route allows non-authenticated and authenticated users to fetch all the details of active products. The response is in a JavaScript object format.

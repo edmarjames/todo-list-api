@@ -68,21 +68,32 @@ I created this API to apply what I have learned on creating REST API using Djang
 5. [Get single task](https://todo-list-notes-api.onrender.com/task/4b22c7e8-d12a-4f41-b37a-8ba845d3c5db)
     - This **GET** route allows authenticated users to fetch the details of a certain task. The URL requires as taskId parameter. Please see route below.
 
-        **`https://todo-list-notes-api.onrender.com/task/4b22c7e8-d12a-4f41-b37a-8ba845d3c5db`**
+        **`https://todo-list-notes-api.onrender.com/task/taskId`**
 
-6. [Change password](https://capstone-2-bautista.onrender.com/users/changePassword)
-    - This **POST** route allows authenticated users to update their password. It requires a bearer token of the authenticated user and the request body is in JSON format and requires the following.
+    - **Validation**
+        - Checks if the taskId is existing.
+
+6. [Update task](https://todo-list-notes-api.onrender.com/task/71937fd7-5b55-4e5e-8181-f199fca632e5/)
+    - This **PATCH** route allows the authenticated user to update the details of a specific task. The URL requires a taskId parameter. Please see route below. 
+
+        **`https://todo-list-notes-api.onrender.com/task/taskId/`**
+
+        The request body is in JSON format and requires the following.
 
         ```
         {
-		    "oldPassword": "jane1",
-		    "newPassword": "jane123"
+		    "title": "Wash the dishes",
+            "description": "Finish it within 20 minutes".
+            "deadline": "2023-04-16",
+            "status": "completed"
 		}
         ```
 
+    - The authenticated user may also opted to put only the detail that is needed to be updated either it is the title, description, deadline or status.
+
     - **Validations**
-        - The user must enter his/her old password correctly since the API will provide an error message if it is incorrect.
-        - This route is only permitted to non-admin users. The API will provide an error message if an admin tries to access this route.
+        - Checks if the taskId is existing.
+        - Deadline should not be in the past.
 
 7. [Create order](https://capstone-2-bautista.onrender.com/users/checkout)
     - This **POST** route allows authenticated users to create single or multiple orders. Upon creating an order, the order will show on the order history. This requires a bearer token of the user and the request body is in JSON format and requires the following.

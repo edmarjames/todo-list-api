@@ -183,53 +183,17 @@ I created this API to apply what I have learned on creating REST API using Djang
 17. [Get all users](https://todo-list-notes-api.onrender.com/all_users)
     - This **GET** route allows **admin** users to fetch details of all users. This requires the user to be a superuser and the response is JSON format.
 
-18. [Archive product](https://capstone-2-bautista.onrender.com/products/639ed7800cf6a4468acba0d2/archive)
-    - This **PUT** route allows **admin** users to archive a specific product. This requires an admin access token and the URL requires a productId parameter. Please see route below. 
+18. [Set user as admin](https://todo-list-notes-api.onrender.com/set_as_admin/2)
+    - This **PATCH** route allows **admin** users to pick a user from the list of all users and set him/her as an admin. This requires the user to be a superuser. The URL requires a userId parameter. Please see route below.
 
-        **`https://capstone-2-bautista.onrender.com/products/:productId/archive`**
-
-    - The API will provide a message as a response, once operation is successful.
-
-    - **Validations**
-        - The API will show an error message as a response if the provided productId does not exists in the database.
-        - This route is only permitted to admin users. The API will provide an error message if a non-admin user tries to access this route.
-
-19. [Activate product](https://capstone-2-bautista.onrender.com/products/639ed7800cf6a4468acba0d2/activate)
-    - This **PUT** route allows **admin** users to activate a specific product. This requires an admin access token and the URL requires a productId parameter. Please see route below.
-
-        **`https://capstone-2-bautista.onrender.com/products/:productId/activate`**
+        **`https://todo-list-notes-api.onrender.com/set_as_admin/userId`**
 
     - The API will provide a message as a response, once operation is successful.
 
     - **Validations**
-        - The API will show an error message as a response if the provided productId does not exists in the database.
-        - This route is only permitted to admin users. The API will provide an error message if a non-admin user tries to access this route.
+    	- Checks if the userId is existing.
 
-20. [Get all orders](https://capstone-2-bautista.onrender.com/users/allOrders)
-    - This **GET** route allows **admin** users to fetch all the orders of all users registered on the API. This requires an admin access token. The response is in a JavaScript object format.
-
-    - **Validation**
-        - This route is only permitted to admin users. The API will provide an error message if a non-admin user tries to access this route.
-
-21. [Get all users](https://capstone-2-bautista.onrender.com/users/allUsers)
-    - This **GET** route allows **admin** users to fetch the details of all users registered on the API.
-    This requires an admin access token. The response is in a JavaScript object format.
-
-    - **Validation**
-        - This route is only permitted to admin users. The API will provide an error message if a non-admin user tries to access this route.
-
-22. [Set user as admin](https://capstone-2-bautista.onrender.com/users/639ed3720cf6a4468acb9b29/setAsAdmin)
-    - This **PUT** route allows **admin** users to pick a user from the list of all users and set him/her as an admin. This requires an admin access token. The URL requires a userId parameter. Please see route below.
-
-        **`https://capstone-2-bautista.onrender.com/users/:userId/setAsAdmin`**
-
-    - The API will provide a message as a response, once operation is successful.
-
-    - **Validations**
-    	- The API will provide an error message as a response, if the provided userId does not exist in the database.
-        - This route is only permitted to admin users. The API will provide an error message if a non-admin user tries to access this route.
-
-23. [Set as normal user](https://capstone-2-bautista.onrender.com/users/639ed3720cf6a4468acb9b29/setAsNormalUser)
+19. [Set as normal user](https://capstone-2-bautista.onrender.com/users/639ed3720cf6a4468acb9b29/setAsNormalUser)
     - This **PUT** route allows **admin** users to pick a user from the list of all users and revoke admin privilages from him/her. This requires an admin access token. The URL requires a userId parameter. Please see route below.
 
         **`https://capstone-2-bautista.onrender.com/users/:userId/setAsNormalUser`**

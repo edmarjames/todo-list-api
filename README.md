@@ -174,11 +174,8 @@ I created this API to apply what I have learned on creating REST API using Djang
     - **Validation**
         - Checks if the noteId is existing.
 
-15. [Get all products](https://capstone-2-bautista.onrender.com/products/)
-	- This **GET** route allows **admin** users to fetch all product details regardless if it is active or not. This requires an admin access token and the response is in a JavaScript object format.
-
-	- **Validation**
-        - This route is only permitted to admin users. The API will provide an error message if a non-admin user tries to access this route.
+15. [Get all users tasks](https://todo-list-notes-api.onrender.com/all_tasks)
+	- This **GET** route allows **admin** users to fetch all tasks details of all users. This requires the user to be a superuser and the response is JSON format.
 
 16. [Add product](https://capstone-2-bautista.onrender.com/products/add)
     - This **POST** route allows **admin** users to add a new product to the database. This requires an admin access token and the request body is in JSON format and requires the following.

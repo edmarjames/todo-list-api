@@ -139,23 +139,13 @@ I created this API to apply what I have learned on creating REST API using Djang
 11. [Get all notes](https://todo-list-notes-api.onrender.com/note/)
     - This **GET** route allows the authenticated user to fetch the details of all of his/her created notes. The response is JSON format.
 
-12. [Update product quantity](https://capstone-2-bautista.onrender.com/users/cart/updateQuantity)
-    - This **PATCH** route allows authenticated users to update the quantity of a certain product on his/her cart. It requires a bearer token of the user and the request body is in JSON format and requires the following.
+12. [Get single note](https://todo-list-notes-api.onrender.com/note/95f4e47e-ae0b-43f9-a04c-e40cd34b8862)
+    - This **GET** route allows authenticated users to fetch the details of a certain note. The URL requires as noteId parameter. Please see route below.
 
-        ```
-	    {
-		    "orderId": "639ed63f0cf6a4468acb9ce2",
-		    "quantity": 2
-		}
-        ```
+        **`https://todo-list-notes-api.onrender.com/note/noteId`**
 
-    - The orderId here, refers to the productOrderId on the user's cart.
-
-    - The API will provide a message as a response, once operation is successful.
-
-    - **Validations**
-		- The API will provide an error message on the response once the productOrderId provided is a productOrderId of a product that was already checked out.
-        - This route is only permitted to non-admin users. The API will provide an error message if an admin tries to access this route.
+    - **Validation**
+        - Checks if the noteId is existing.
 
 13. [Checkout from cart](https://capstone-2-bautista.onrender.com/users/checkoutFromCart)
     - This **POST** route allows authenticated users to checkout products from their cart. It requires a bearer token of the user and the request body is in JSON format and requires the following.

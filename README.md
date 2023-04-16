@@ -227,11 +227,10 @@ As of now, I'm taking a break on development since I am also going to be busy on
 
 ## <a name="#language-and-tools"></a>Languages and tools used
 
-<p align="center">
-    ![logo-mongodb-with-name](/uploads/f860dec26db0a69ef9a12488812057c8/logo-mongodb-with-name.png)
-    ![logo-expressjs-with-name](/uploads/ee4325e407dec9709d189b97ce4cc69c/logo-expressjs-with-name.png)
-    ![logo-nodejs-with-name](/uploads/0603502f0b4cded65579c5d773ae3fec/logo-nodejs-with-name.png)
-    ![logo-git-with-name](/uploads/048bca6c9875b9bc7a4a35acabb6ec35/logo-git-with-name.png)
-    ![logo-postman-with-name](/uploads/44a043b21779f3075455ec8867d3d92b/logo-postman-with-name.png)
-    ![logo-sublime-text-3-with-name](/uploads/a41216bc7af655f6d540456e61b216c7/logo-sublime-text-3-with-name.png)
+<p align="center" style="display: flex; justify-content: space-around;">
+    <img src="https://i.ibb.co/VWnyF7X/drf.png" alt="drf" width="120" height="120" />
+    <img src="https://i.ibb.co/M2yZBc7/django.png" alt="django" width="120" height="120" />
+    <img src="https://i.ibb.co/JQ2XBm1/python.png" alt="django" width="120" height="120" />
+    <img src="https://i.ibb.co/PZZLq7J/vscode-removebg-preview.png" alt="vscode" width="120" height="120" />
+    <img src="https://i.ibb.co/n6Ddy51/logo-postman.png" alt="postman" width="140" height="140" />
 </p>

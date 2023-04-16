@@ -47,8 +47,20 @@ I created this API to apply what I have learned on creating REST API using Djang
     - **Validation**
     	- The API can determine if the username or password is incorrect and will throw an error message as a response.
 
-3. [Get all active products](https://capstone-2-bautista.onrender.com/products/active)
-    - This **GET** route allows non-authenticated and authenticated users to fetch all the details of active products. The response is in a JavaScript object format.
+3. [Add task](https://todo-list-notes-api.onrender.com/task/)
+    - This **POST** route allows authenticated users to create a new task. The request body is in JSON format and requires the following. Take note that the format of the deadline should be **yyyy-MM-dd**
+
+        ```
+        {
+            "title": "Wash the dishes",
+            "description": "Finish it within 20 minutes",
+            "deadline": "2023-04-16"
+        }
+        ```
+
+    - **Validation**
+        - Checks if the title is already existing in the database.
+        - Checks if the deadline set is in the past.
 
 4. [Get single product](https://capstone-2-bautista.onrender.com/products/6392c8e322375445dc545ad4)
     - This **GET** route allows non-authenticated and authenticated users to fetch the details of a certain product. The URL requires a productId parameter. Please see route below.

@@ -95,28 +95,13 @@ I created this API to apply what I have learned on creating REST API using Djang
         - Checks if the taskId is existing.
         - Deadline should not be in the past.
 
-7. [Create order](https://capstone-2-bautista.onrender.com/users/checkout)
-    - This **POST** route allows authenticated users to create single or multiple orders. Upon creating an order, the order will show on the order history. This requires a bearer token of the user and the request body is in JSON format and requires the following.
-        - productId
-        - quantity
+7. [Delete task](https://todo-list-notes-api.onrender.com/task/73613832-7735-4ed1-a05b-1d26f3531747/)
+    - This **DELETE** route allows authenticated users to delete a single task. The URL requires a taskId parameter. Please see route below.
 
-    - If the user wants to create multiple orders at the same time. He/she may wrap the request body with square brackets. Please refer to the snippet below.
-
-        ```
-	    [
-		    {
-		        "productId": "63904850d5002a4a038466cb",
-		        "quantity": 1
-		    },
-		    {
-		        "productId": "639048afd5002a4a038466d0",
-		        "quantity": 2
-		    }
-		]
-        ```
+        **`https://todo-list-notes-api.onrender.com/task/taskId/`**
 
     - **Validation**
-        - This route is only permitted to non-admin users. The API will provide an error message if an admin tries to access this route.
+        - Checks if the taskId is existing.
 
 8. [Add to cart](https://capstone-2-bautista.onrender.com/users/addToCart)
     - This **POST** route allows authenticated users to add single or multiple products to the cart. It requires a bearer token of the user and the request body is in JSON format and requires the following.

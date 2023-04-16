@@ -193,16 +193,15 @@ I created this API to apply what I have learned on creating REST API using Djang
     - **Validations**
     	- Checks if the userId is existing.
 
-19. [Set as normal user](https://capstone-2-bautista.onrender.com/users/639ed3720cf6a4468acb9b29/setAsNormalUser)
-    - This **PUT** route allows **admin** users to pick a user from the list of all users and revoke admin privilages from him/her. This requires an admin access token. The URL requires a userId parameter. Please see route below.
+19. [Set as normal user](https://todo-list-notes-api.onrender.com/set_as_normal_user/2)
+    - This **PATCH** route allows **admin** users to pick a user from the list of all users and revoke admin privilages from him/her. This requires the user to be a superuser. The URL requires a userId parameter. Please see route below.
 
-        **`https://capstone-2-bautista.onrender.com/users/:userId/setAsNormalUser`**
+        **`https://todo-list-notes-api.onrender.com/set_as_normal_user/userId`**
 
     - The API will provide a message as a response, once operation is successful.
 
     - **Validations**
-    	- The API will provide an error message as a response, if the provided userId does not exist in the database.
-        - This route is only permitted to admin users. The API will provide an error message if a non-admin user tries to access this route.
+    	- Checks if the userId is existing.
 
 ## <a name="#upcoming-new-features"></a>Upcoming New Features
 

@@ -129,7 +129,7 @@ I created this API to apply what I have learned on creating REST API using Djang
         ```
         {
             "title": "How to migrate migrations on django?",
-            "Content": "run this command on your terminal python manage.py makemigrations"
+            "Content": "Run this command on your terminal python manage.py makemigrations"
         }
         ```
 
@@ -147,20 +147,24 @@ I created this API to apply what I have learned on creating REST API using Djang
     - **Validation**
         - Checks if the noteId is existing.
 
-13. [Checkout from cart](https://capstone-2-bautista.onrender.com/users/checkoutFromCart)
-    - This **POST** route allows authenticated users to checkout products from their cart. It requires a bearer token of the user and the request body is in JSON format and requires the following.
+13. [Update note](https://todo-list-notes-api.onrender.com/note/e4ae8224-50bf-4239-bb01-992995e239c7/)
+    - This **PATCH** route allows the authenticated user to update the details of a specific note. The URL requires a noteId parameter. Please see route below. 
+
+        **`https://todo-list-notes-api.onrender.com/note/noteId/`**
+
+        The request body is in JSON format and requires the following.
 
         ```
-	    {
-	    	"orderId": "639ed63f0cf6a4468acb9ce0"
+        {
+		    "title": "How to migrate database migrations on django?",
+            "content": "Run this command on your terminal python manage.py makemigrations"
 		}
         ```
 
-    - The API will provide a message as a response, once operation is successful.
+    - The authenticated user may also opted to put only the detail that is needed to be updated either it is the title or content.
 
     - **Validations**
-		- The API will provide an error message on the response once the orderId provided is an orderId of a product/s from cart that was already checked out.
-        - This route is only permitted to non-admin users. The API will provide an error message if an admin tries to access this route.
+        - Checks if the noteId is existing.
 
 14. [View order history](https://capstone-2-bautista.onrender.com/users/myOrders)
     - This **GET** route allows authenticated users to view their order history. It requires a bearer token of the user. The response is in a JavaScript object format.

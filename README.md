@@ -166,11 +166,13 @@ I created this API to apply what I have learned on creating REST API using Djang
     - **Validations**
         - Checks if the noteId is existing.
 
-14. [View order history](https://capstone-2-bautista.onrender.com/users/myOrders)
-    - This **GET** route allows authenticated users to view their order history. It requires a bearer token of the user. The response is in a JavaScript object format.
+14. [Delete note](https://todo-list-notes-api.onrender.com/note/95f4e47e-ae0b-43f9-a04c-e40cd34b8862/)
+    - This **DELETE** route allows authenticated users to delete a single note. The URL requires a taskId parameter. Please see route below.
+
+        **`https://todo-list-notes-api.onrender.com/note/noteId/`**
 
     - **Validation**
-        - This route is only permitted to non-admin users. The API will provide an error message if an admin tries to access this route.
+        - Checks if the noteId is existing.
 
 15. [Get all products](https://capstone-2-bautista.onrender.com/products/)
 	- This **GET** route allows **admin** users to fetch all product details regardless if it is active or not. This requires an admin access token and the response is in a JavaScript object format.

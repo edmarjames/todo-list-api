@@ -65,8 +65,10 @@ I created this API to apply what I have learned on creating REST API using Djang
 4. [Get all task](https://todo-list-notes-api.onrender.com/task/)
     - This **GET** route allows the authenticated user to fetch the details of all of his/her created tasks. The response is JSON format.
 
-5. [View profile](https://capstone-2-bautista.onrender.com/users/getUserDetails)
-    - This **GET** route allows authenticated users to view their basic details such as firstname, lastname, email and mobile number. It requires a bearer token of the authenticated user, you may enter the generated JSON web token provided on the login route. The response is in a JavaScript object format.
+5. [Get single task](https://todo-list-notes-api.onrender.com/task/4b22c7e8-d12a-4f41-b37a-8ba845d3c5db)
+    - This **GET** route allows authenticated users to fetch the details of a certain task. The URL requires as taskId parameter. Please see route below.
+
+        **`https://todo-list-notes-api.onrender.com/task/4b22c7e8-d12a-4f41-b37a-8ba845d3c5db`**
 
 6. [Change password](https://capstone-2-bautista.onrender.com/users/changePassword)
     - This **POST** route allows authenticated users to update their password. It requires a bearer token of the authenticated user and the request body is in JSON format and requires the following.

@@ -13,21 +13,26 @@ I created this API to apply what I have learned on creating REST API using Djang
 
 ## Routes
 
-1. [Register](https://capstone-2-bautista.onrender.com/users/register) 
-    - This **POST** route allows the user to register to the e-commerce api. The request body is in JSON format and requires the following.
+1. [Register](https://todo-list-notes-api.onrender.com/users/register) 
+    - This **POST** route allows a user to register to the to-do list api. The request body is in JSON format and requires the following.
 
         ```
         {
-		    "firstName": "Jane",
-		    "lastName": "Doe",
-		    "email": "jane@mail.com",
-		    "password": "jane1",
-		    "mobileNo": "09123456789"
+		    "username": "johndoe",
+		    "first_name": "John",
+		    "last_name": "Doe",
+		    "email": "johndoe@mail.com",
+		    "password": "johndoe1",
+            "password2": "johndoe1"
 		}    
         ```
 
     - **Validation**
         - The API will not allow user's to register using an email that is already taken or already existing in the database.
+        - All fields are required.
+        - Checks if email is valid.
+        - Removes leading and trailing whitespace, comma and period.
+        - Checks if password and password2 matches.
 
 2. [Login](https://capstone-2-bautista.onrender.com/users/login)
     - This **POST** route allows the user to login to the e-commerce api. Upon successful login, the API will provide the generated JSON web token on the response. The request body is in JSON format and requires the following.

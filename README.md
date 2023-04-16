@@ -62,10 +62,8 @@ I created this API to apply what I have learned on creating REST API using Djang
         - Checks if the title is already existing in the database.
         - Checks if the deadline set is in the past.
 
-4. [Get single product](https://capstone-2-bautista.onrender.com/products/6392c8e322375445dc545ad4)
-    - This **GET** route allows non-authenticated and authenticated users to fetch the details of a certain product. The URL requires a productId parameter. Please see route below.
-
-        **`https://capstone-2-bautista.onrender.com/products/:productId`**
+4. [Get all task](https://todo-list-notes-api.onrender.com/task/)
+    - This **GET** route allows the authenticated user to fetch the details of all of his/her created tasks. The response is JSON format.
 
 5. [View profile](https://capstone-2-bautista.onrender.com/users/getUserDetails)
     - This **GET** route allows authenticated users to view their basic details such as firstname, lastname, email and mobile number. It requires a bearer token of the authenticated user, you may enter the generated JSON web token provided on the login route. The response is in a JavaScript object format.

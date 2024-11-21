@@ -227,10 +227,10 @@ As of now, I'm taking a break on development since I am also going to be busy on
 
 ## <a name="#language-and-tools"></a>Languages and tools used
 
-<p align="center" style="display: flex; justify-content: space-around;">
-    <img src="https://i.ibb.co/VWnyF7X/drf.png" alt="drf" width="120" height="120" />
-    <img src="https://i.ibb.co/M2yZBc7/django.png" alt="django" width="120" height="120" />
-    <img src="https://i.ibb.co/JQ2XBm1/python.png" alt="django" width="120" height="120" />
-    <img src="https://i.ibb.co/PZZLq7J/vscode-removebg-preview.png" alt="vscode" width="120" height="120" />
-    <img src="https://i.ibb.co/n6Ddy51/logo-postman.png" alt="postman" width="140" height="140" />
+<p align="left" style="display: flex; justify-content: space-around;">
+    <img src="https://i.ibb.co/VWnyF7X/drf.png" alt="drf" width="50" height="50" />
+    <img src="https://i.ibb.co/M2yZBc7/django.png" alt="django" width="50" height="50" />
+    <img src="https://i.ibb.co/JQ2XBm1/python.png" alt="django" width="50" height="50" />
+    <img src="https://i.ibb.co/PZZLq7J/vscode-removebg-preview.png" alt="vscode" width="50" height="50" />
+    <img src="https://i.ibb.co/n6Ddy51/logo-postman.png" alt="postman" width="55" height="55" />
 </p>
